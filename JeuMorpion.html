@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Jeu de Morpion</title>
+  <style>
+    table, tr, td
+    {
+      background: #fcf7c1;
+      text-align: center;
+      border: 1px solid gray;
+    }
+    tr
+    {
+      height: 70px;
+    }
+    td
+    {
+      width: 70px;
+      height: 70px;
+    }
+    button {
+        padding: 10px;
+    }
+  </style>
+  </head>
+  <body>
+    <table id="grid" align="center">
+      <tr>
+        <td id="pos_0_0"></td>
+        <td id="pos_0_1"></td>
+        <td id="pos_0_2"></td>
+      </tr>
+      <tr>
+        <td id="pos_1_0"></td>
+        <td id="pos_1_1"></td>
+        <td id="pos_1_2"></td>
+      </tr>
+      <tr>
+        <td id="pos_2_0"></td>
+        <td id="pos_2_1"></td>
+        <td id="pos_2_2"></td>
+      </tr>
+      <tr>
+        <td colspan="3"><button id="rejouer" type="submit" onclick=vider(boxes);>Rejouer</button></td>
+      </tr>
+    </table>
+    <p id="demo" align="center" style="font-family: monospace; font-weight: bold; font-size: 4em;"></p>
+  
+  
+  
+  
+  <script>
+  
+       let partie_terminee = false;
+      let moves = [0,0,0,0,0,0,0,0,0];
+      var boxes = document.getElementsByTagName("td");
+      let arraymoves =  Array.from(boxes);
+      
+      
+      
+      boxes[9].addEventListener("click", function ()  { vider() }   )
+      for(let i=0; i < boxes.length-1; i++)
+        {
+          boxes[i].addEventListener("click", function ()  { remplir_boxes(this) })
+          
+          
+        }
+        
+function remplir_boxes(boxe)
+{
+  
+  
+  if (!partie_terminee){
+  if(boxe.innerHTML !=""){
+    console.log("case utilisée");
+  }
+  else {
+    
+    boxe.innerHTML = "<img src='o.gif'>" 
+    moves[arraymoves.indexOf(boxe)] = 1;
+    
+    if (verif_win(1)){
+
+console.log("Vous avez gagné");
+document.getElementById("demo").innerHTML = "<span style='color:#25C700'> Victoire! </span>  ";
+
+
+}
+else bot_play(); 
+    
+    }
+  
+  
+  
+  
+  console.log(moves);
+  
+  
+ 
+
+  }
+
+}
+
+var rejouer = document.getElementsByTagName("td");
+
+
+
+
+
+
+function vider (rejouer) 
+{
+  for(let i=0; i < boxes.length-1; i++)
+        {
+          boxes[i].innerHTML = "";   
+        }
+        moves = [0,0,0,0,0,0,0,0,0];   
+        document.getElementById("demo").innerHTML = ""; 
+        partie_terminee = false;
+}
+
+
+function bot_play()
+{
+  let caseVides =  arraymoves.filter(boxe =>boxe.innerHTML =="");
+  if(caseVides <= 0)
+ {
+    console.log("Match Nul");
+    document.getElementById("demo").innerHTML = "Match nul";
+
+ } else {
+
+var bot_pos = Math.floor(Math.random() * Math.floor(caseVides.length - 1))
+
+console.log(bot_pos);
+console.log(caseVides);
+
+caseVides[bot_pos].innerHTML = "<img src='x.gif'>";
+moves[arraymoves.indexOf(caseVides[bot_pos])] = 2;
+  
+if (verif_win(2)){
+console.log("Vous avez perdu");
+document.getElementById("demo").innerHTML = "<span style='color:#FF0000'> Défaite! </span>";
+
+}
+
+
+ }
+}
+
+
+
+
+
+function verif_win(player){
+
+ 
+ if (
+    moves[0] == player && moves[1] == player && moves[2] == player ||
+    moves[3] == player && moves[4] == player && moves[5] == player ||
+    moves[6] == player && moves[7] == player && moves[8] == player ||
+    
+    moves[0] == player && moves[3] == player && moves[6] == player ||
+    moves[1] == player && moves[4] == player && moves[7] == player ||
+    moves[2] == player && moves[5] == player && moves[8] == player ||
+    
+    moves[0] == player && moves[4] == player && moves[8] == player ||
+    moves[2] == player && moves[4] == player && moves[6] == player) 
+{
+  partie_terminee =true;
+  return true;
+} else return false;
+
+
+
+
+}
+
+  </script>
+  </body>
+</html>
